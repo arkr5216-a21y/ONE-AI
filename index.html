@@ -1,0 +1,179 @@
+
+<!doctype html>
+<html lang="my">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101827">
+<title>ONE AI</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1120;--panel:#121c2e;--line:#26354d;--text:#eef4ff;--muted:#9cacc5;--blue:#6ea8fe;--green:#35d49a;--red:#ff7777}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at top,#172746 0,#0b1120 55%);color:var(--text);font-family:system-ui,-apple-system,sans-serif;min-height:100vh}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer;border:0;border-radius:12px;padding:12px 16px;font-weight:700;background:var(--blue);color:#071225}
+button.secondary{background:#26354d;color:var(--text);border:1px solid #3b4d68}
+button:disabled{opacity:.55}
+.wrap{max-width:900px;margin:auto;padding:18px 14px 40px}
+.top,.settings-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.top{margin-bottom:20px}
+.brand{display:flex;align-items:center;gap:11px}
+.logo{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#78b4ff,#8b78ff);display:grid;place-items:center;color:#09152a;font-weight:900;font-size:22px}
+.brand h1{margin:0;font-size:23px}.brand p{margin:2px 0 0;color:var(--muted);font-size:12px}
+.panel{background:rgba(18,28,46,.94);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:15px}
+.hero h2{margin:0 0 8px;font-size:22px}.hero p{color:var(--muted);line-height:1.7}
+.status,.msg{font-size:13px;color:var(--muted);margin-top:12px}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#e6b85c;margin-right:7px}.dot.ok{background:var(--green)}
+label{display:block;font-weight:650;font-size:14px;margin:14px 0 7px}
+input,textarea,select{width:100%;background:#0a1221;border:1px solid #34445d;color:var(--text);padding:12px;border-radius:11px}
+textarea{min-height:100px;resize:vertical}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.answer{white-space:pre-wrap;line-height:1.8;overflow-wrap:anywhere}
+.hidden{display:none!important}.small{font-size:12px;color:var(--muted);line-height:1.7}
+.err{color:var(--red)}.good{color:var(--green)}
+.foot{text-align:center;color:#71829d;font-size:12px;padding:12px}
+@media(max-width:560px){.grid{grid-template-columns:1fr}.panel{padding:15px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header class="top">
+<div class="brand"><div class="logo">O</div><div><h1>ONE AI</h1><p>Your personal AI assistant</p></div></div>
+<button class="secondary" id="settingsToggle" type="button">⚙ Settings</button>
+</header>
+
+<section class="panel hero">
+<h2>မင်္ဂလာပါ 👋 ONE AI မှ ကြိုဆိုပါတယ်</h2>
+<p>မင်းရဲ့ရည်မှန်းချက်ကို ရေးထည့်ပါ။ AI က အကြံဉာဏ်နဲ့ လုပ်ဆောင်ရမယ့် အဆင့်တွေကို ကူညီပေးမယ်။ စတင်အသုံးမပြုခင် Settings ထဲမှာ Gemini API Key ကို ထည့်ပါ။</p>
+<div class="status" id="keyStatus"></div>
+</section>
+
+<section class="panel hidden" id="settingsPanel">
+<div class="settings-head"><h3>⚙ Settings</h3><button type="button" class="secondary" id="closeSettings">ပိတ်မယ်</button></div>
+<label for="apiKey">Gemini API Key</label>
+<input id="apiKey" type="password" placeholder="API Key ကို ဒီနေရာမှာထည့်ပါ" autocomplete="off" spellcheck="false">
+<div class="actions">
+<button id="saveKey" type="button">ဒီဖုန်းမှာ သိမ်းမယ်</button>
+<button id="showKey" class="secondary" type="button">ပြ / ဖျောက်</button>
+<button id="removeKey" class="secondary" type="button">ဖျက်မယ်</button>
+</div>
+<p class="small">သတိပေးချက် — ဒီနည်းလမ်းက ကိုယ်ပိုင်စမ်းသပ်မှုအတွက်သာ သင့်တော်ပါတယ်။ Key ကို ဒီဖုန်းရဲ့ browser storage မှာ သိမ်းထားမယ်။ Public website အတွက် browser ထဲမှာ Key ထားတာ မလုံခြုံပါ။ GitHub code ထဲကို Key ကို မထည့်ပါနဲ့။</p>
+<div id="settingsMsg" class="msg" role="status"></div>
+</section>
+
+<section class="panel">
+<h3 style="margin-top:0">မင်းရဲ့ ရည်မှန်းချက်</h3>
+<label for="goal">ဘာလုပ်ချင်တာလဲ?</label>
+<textarea id="goal" placeholder="ဥပမာ - ဖုန်းတစ်လုံးနဲ့ online ကနေ ဝင်ငွေရနိုင်မယ့် နည်းလမ်းကို စတင်ချင်တယ်။"></textarea>
+<div class="grid">
+<div><label for="language">အဖြေဘာသာစကား</label><select id="language"><option value="Burmese">မြန်မာ</option><option value="English">English</option><option value="Thai">ไทย</option></select></div>
+<div><label for="level">အတွေ့အကြုံ</label><select id="level"><option>Beginner (အစပြုသူ)</option><option>Intermediate (အလယ်အလတ်)</option><option>Advanced (ကျွမ်းကျင်သူ)</option></select></div>
+<div><label for="time">တစ်နေ့အချိန်</label><select id="time"><option>30 minutes</option><option>1 hour</option><option>2 hours</option><option>4+ hours</option></select></div>
+<div><label for="budget">ဘတ်ဂျက်</label><select id="budget"><option>0 / Free</option><option>Low budget</option><option>Medium budget</option><option>Flexible budget</option></select></div>
+</div>
+<div class="actions"><button id="askAI" type="button">✨ AI နဲ့ အစီအစဉ်ရေးမယ်</button><button id="clearForm" type="button" class="secondary">ပြန်စမယ်</button></div>
+<div id="requestMsg" class="msg" role="status"></div>
+</section>
+
+<section class="panel hidden" id="answerPanel">
+<h3 style="margin-top:0">ONE AI ရဲ့ အဖြေ</h3>
+<div id="answer" class="answer"></div>
+<div class="actions"><button id="copyAnswer" class="secondary" type="button">အဖြေကူးယူမယ်</button></div>
+</section>
+<footer class="foot">ONE AI · Personal AI Assistant</footer>
+</main>
+
+<script>
+(()=>{
+'use strict';
+const $=id=>document.getElementById(id);
+const STORE='one_ai_gemini_key_v1';
+const model='gemini-2.5-flash';
+let apiKey='';
+try{apiKey=localStorage.getItem(STORE)||''}catch(e){}
+
+function updateStatus(){
+$('keyStatus').innerHTML=apiKey?'<span class="dot ok"></span> API Key ထည့်ထားပါတယ်':'<span class="dot"></span> API Key မထည့်ရသေးပါ';
+$('apiKey').value=apiKey;
+}
+function message(id,text,cls=''){
+const el=$(id);el.textContent=text;el.className='msg '+cls;
+}
+function settings(open){$('settingsPanel').classList.toggle('hidden',!open)}
+
+$('settingsToggle').addEventListener('click',()=>settings($('settingsPanel').classList.contains('hidden')));
+$('closeSettings').addEventListener('click',()=>settings(false));
+
+$('saveKey').addEventListener('click',()=>{
+const k=$('apiKey').value.trim();
+if(!k){message('settingsMsg','Key ကို အရင်ထည့်ပါ။','err');return}
+try{
+localStorage.setItem(STORE,k);apiKey=k;updateStatus();
+message('settingsMsg','ဒီဖုန်းရဲ့ browser မှာ သိမ်းပြီးပါပြီ။','good');
+}catch(e){message('settingsMsg','ဒီ browser မှာ သိမ်းလို့မရပါ။','err')}
+});
+
+$('showKey').addEventListener('click',()=>{
+$('apiKey').type=$('apiKey').type==='password'?'text':'password';
+});
+$('removeKey').addEventListener('click',()=>{
+try{localStorage.removeItem(STORE)}catch(e){}
+apiKey='';$('apiKey').value='';updateStatus();
+message('settingsMsg','API Key ကို ဖျက်ပြီးပါပြီ။');
+});
+
+$('askAI').addEventListener('click',async()=>{
+const goal=$('goal').value.trim();
+if(!apiKey){message('requestMsg','အရင်ဆုံး Settings ကိုဖွင့်ပြီး Gemini API Key ထည့်ပါ။','err');settings(true);return}
+if(!goal){message('requestMsg','ရည်မှန်းချက်ကို အရင်ရေးထည့်ပါ။','err');$('goal').focus();return}
+
+const btn=$('askAI');btn.disabled=true;btn.textContent='AI စဉ်းစားနေပါတယ်…';
+message('requestMsg','Gemini AI ကို ချိတ်ဆက်နေပါတယ်…');
+$('answerPanel').classList.add('hidden');
+
+const prompt=`You are ONE AI, a practical and honest personal planning assistant. Reply in ${$('language').value}. Help the user with a realistic step-by-step plan. Do not claim actions you did not perform. Explain risks and free or low-cost options clearly.
+User goal: ${goal}
+Experience: ${$('level').value}
+Available time per day: ${$('time').value}
+Budget: ${$('budget').value}
+Provide: 1) understanding of goal 2) step-by-step plan 3) tools/resources needed 4) realistic timeline 5) risks/scams to avoid 6) exact first task for today.`;
+
+try{
+const response=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,{
+method:'POST',
+headers:{'Content-Type':'application/json','x-goog-api-key':apiKey},
+body:JSON.stringify({contents:[{parts:[{text:prompt}]}],generationConfig:{temperature:0.7,maxOutputTokens:1800}})
+});
+let data={};
+try{data=await response.json()}catch(e){}
+if(!response.ok)throw new Error(data?.error?.message||`HTTP ${response.status}`);
+const answer=data?.candidates?.[0]?.content?.parts?.map(p=>p.text||'').join('\n').trim();
+if(!answer)throw new Error('AI က အဖြေမပြန်လာပါ။ API Key သို့မဟုတ် model ကို စစ်ပါ။');
+$('answer').textContent=answer;
+$('answerPanel').classList.remove('hidden');
+message('requestMsg','အဖြေရပါပြီ။','good');
+$('answerPanel').scrollIntoView({behavior:'smooth',block:'start'});
+}catch(e){
+let detail=e.message||'Unknown error';
+if(/API_KEY_INVALID|invalid api key/i.test(detail))detail='API Key မမှန်ပါ။ Settings ထဲမှာ ပြန်စစ်ပါ။';
+if(/quota|RESOURCE_EXHAUSTED/i.test(detail))detail='API quota ကန့်သတ်ချက်ရှိနိုင်ပါတယ်။ Google AI Studio မှာ စစ်ပါ။';
+message('requestMsg','ချိတ်ဆက်မအောင်မြင်ပါ — '+detail,'err');
+}finally{
+btn.disabled=false;btn.textContent='✨ AI နဲ့ အစီအစဉ်ရေးမယ်';
+}
+});
+
+$('clearForm').addEventListener('click',()=>{
+$('goal').value='';$('answer').textContent='';$('answerPanel').classList.add('hidden');message('requestMsg','');
+});
+$('copyAnswer').addEventListener('click',async()=>{
+try{await navigator.clipboard.writeText($('answer').textContent);message('requestMsg','အဖြေကို ကူးယူပြီးပါပြီ။','good')}
+catch(e){message('requestMsg','ကူးယူလို့မရပါ။ အဖြေစာသားကို ဖိထားပြီး ကူးယူပါ။','err')}
+});
+updateStatus();
+})();
+</script>
+</body>
+  </html>
+  
