@@ -1,0 +1,6 @@
+{
+  "appId": "com.oneai.app",
+  "appName": "ONE AI",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}
