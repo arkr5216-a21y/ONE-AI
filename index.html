@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="my">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101827">
+<title>ONE AI — Everyday Problem Solver</title>
+<style>
+:root{--bg:#0b1220;--panel:#121c2d;--panel2:#18253a;--text:#f3f6fb;--muted:#aab7ca;--accent:#8be9c2;--line:#2a3a52}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(160deg,#101c30,#090f1b 65%);color:var(--text);font-family:system-ui,-apple-system,"Noto Sans Myanmar",sans-serif;min-height:100vh}
+.wrap{max-width:760px;margin:auto;padding:18px 15px 44px}.top{display:flex;align-items:center;gap:12px;margin:10px 0 22px}.logo{width:46px;height:46px;border-radius:15px;background:var(--accent);color:#092018;display:grid;place-items:center;font-weight:900;font-size:20px}.brand{font-size:20px;font-weight:800;letter-spacing:.4px}.sub{font-size:12px;color:var(--muted);margin-top:2px}
+.hero{padding:23px 20px;border:1px solid var(--line);border-radius:24px;background:linear-gradient(135deg,#17273d,#111a2a);box-shadow:0 16px 44px #0003}.eyebrow{color:var(--accent);font-size:12px;font-weight:700;letter-spacing:1px}.hero h1{font-size:clamp(25px,6vw,36px);line-height:1.25;margin:10px 0}.hero p{color:var(--muted);line-height:1.7;margin:0}
+.card{margin-top:16px;padding:19px;border:1px solid var(--line);border-radius:20px;background:#111b2b}.card h2{font-size:18px;margin:0 0 7px}.hint{color:var(--muted);font-size:13px;line-height:1.6;margin:0 0 15px}
+label{display:block;font-size:14px;font-weight:650;margin:14px 0 7px}input,select,textarea{width:100%;padding:13px 14px;border-radius:12px;border:1px solid #35465f;background:#0b1423;color:var(--text);font:inherit;outline:none}textarea{min-height:94px;resize:vertical}input:focus,select:focus,textarea:focus{border-color:var(--accent)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+button{border:0;border-radius:13px;padding:14px 16px;font:inherit;font-weight:750;cursor:pointer}.primary{background:var(--accent);color:#082016;width:100%;margin-top:17px}.secondary{background:#23334a;color:var(--text)}.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px}.chip{font-size:12px;padding:8px 10px;border:1px solid var(--line);border-radius:99px;color:#d5e0ee;background:#142137;cursor:pointer}
+.result{display:none;margin-top:16px}.result.show{display:block}.result h2{margin-bottom:12px}.step{padding:13px 14px;background:#0b1423;border:1px solid var(--line);border-radius:13px;margin:9px 0;line-height:1.65}.step strong{color:var(--accent);display:block;margin-bottom:3px}.notice{color:var(--muted);font-size:12px;line-height:1.6;margin-top:14px}.footer{text-align:center;color:#8393aa;font-size:12px;margin-top:25px}
+@media(max-width:520px){.grid{grid-template-columns:1fr}.hero{padding:20px 17px}.card{padding:16px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="logo">ONE</div>
+    <div><div class="brand">ONE AI</div><div class="sub">Your everyday problem solver · Prototype</div></div>
+  </header>
+  <section class="hero">
+    <div class="eyebrow">START WITH ONE PROBLEM</div>
+    <h1>အလုပ်ရှာဖို့နဲ့ ဝင်ငွေတိုးဖို့<br>ဘယ်ကစရမလဲ?</h1>
+    <p>သင့်အခြေအနေကို ပြောပြပါ။ ONE AI က စတင်လုပ်ဆောင်နိုင်မယ့် အစီအစဉ်တစ်ခု ပြင်ဆင်ပေးမယ်။</p>
+  </section>
+  <section class="card">
+    <h2>သင့်အကြောင်း အနည်းငယ်ပြောပြပါ</h2>
+    <p class="hint">အချက်အလက်အနည်းငယ်ဖြည့်ပြီး သင့်အတွက် သင့်တော်မယ့် နောက်တစ်ဆင့်ကို ရှာကြည့်ပါ။</p>
+    <form id="planForm">
+      <label for="goal">အခု အဓိကလိုချင်တာ</label>
+      <select id="goal">
+        <option value="job">အလုပ်တစ်ခု ရှာချင်တယ်</option>
+        <option value="side">အပိုဝင်ငွေ ရှာချင်တယ်</option>
+        <option value="business">ကိုယ်ပိုင်လုပ်ငန်း စချင်တယ်</option>
+        <option value="cv">CV / အလုပ်လျှောက်စာ ပြင်ဆင်ချင်တယ်</option>
+      </select>
+      <div class="grid">
+        <div><label for="country">နေထိုင်ရာနိုင်ငံ</label><input id="country" placeholder="ဥပမာ - Thailand"></div>
+        <div><label for="language">အဆင်ပြေတဲ့ဘာသာစကား</label><select id="language"><option>မြန်မာ</option><option>ไทย</option><option>English</option><option>အခြား</option></select></div>
+      </div>
+      <label for="skills">သင့်ကျွမ်းကျင်မှု / အတွေ့အကြုံ</label>
+      <textarea id="skills" placeholder="ဥပမာ - ဆိုင်အလုပ် ၂ နှစ်၊ ဖုန်းသုံးတတ်၊ ထိုင်းစကား အနည်းငယ်ပြောတတ်"></textarea>
+      <label for="time">တစ်နေ့ အချိန်ဘယ်လောက်ပေးနိုင်လဲ</label>
+      <select id="time"><option>တစ်နေ့ ၁ နာရီအောက်</option><option>တစ်နေ့ ၁–၃ နာရီ</option><option>တစ်နေ့ ၃ နာရီအထက်</option><option>အချိန်ပြည့်</option></select>
+      <label for="budget">စတင်ဖို့ အရင်းအနှီး</label>
+      <select id="budget"><option>အရင်းအနှီးမရှိသလောက်</option><option>အနည်းငယ်ရှိတယ်</option><option>ရင်းနှီးနိုင်တဲ့ဘတ်ဂျက်ရှိတယ်</option></select>
+      <button class="primary" type="submit">ကျွန်တော့်အစီအစဉ် ဖန်တီးပေးပါ →</button>
+    </form>
+    <div class="result" id="result" aria-live="polite">
+      <h2 id="resultTitle">သင့်အတွက် စတင်အစီအစဉ်</h2>
+      <div id="steps"></div>
+      <button class="secondary" id="copyBtn" type="button">အစီအစဉ်ကို ကူးယူရန်</button>
+      <p class="notice">ဒီဟာက ဖုန်းထဲမှာ အလုပ်လုပ်တဲ့ Prototype သရုပ်ပြမှုပါ။ လက်ရှိတွင် AI API၊ အလုပ်ခေါ်စာ တိုက်ရိုက်ရှာဖွေမှု၊ အကောင့်နဲ့ ငွေပေးချေမှု မချိတ်ဆက်ရသေးပါ။ အလုပ်ရမယ်/ဝင်ငွေရမယ်လို့ အာမမခံပါ။ အလုပ်ရဖို့ ကြိုတင်ငွေတောင်းသူတွေကို သတိထားပါ။</p>
+    </div>
+  </section>
+  <div class="footer">ONE AI · Early prototype · Built for mobile first</div>
+</div>
+<script>
+const form=document.getElementById('planForm');
+const result=document.getElementById('result');
+const steps=document.getElementById('steps');
+const title=document.getElementById('resultTitle');
+let currentPlan='';
+form.addEventListener('submit',e=>{
+  e.preventDefault();
+  const goal=document.getElementById('goal').value;
+  const country=document.getElementById('country').value.trim()||'သင့်နေရာ';
+  const language=document.getElementById('language').value;
+  const skills=document.getElementById('skills').value.trim()||'လက်ရှိကျွမ်းကျင်မှုကို စာရင်းပြုစုရန်';
+  const time=document.getElementById('time').value;
+  const budget=document.getElementById('budget').value;
+  const plans={
+    job:{title:'အလုပ်ရှာဖို့ ၃ ဆင့်',items:[
+      ['၁။ ကိုယ်ရေးအချက်အလက် စုစည်းပါ','အလုပ်အတွေ့အကြုံ၊ ကျွမ်းကျင်မှုနဲ့ ဆက်သွယ်ရန်အချက်အလက်တွေကို စာရင်းလုပ်ပါ။'],
+      ['၂။ ကိုက်ညီတဲ့အလုပ် ၃ မျိုးရွေးပါ',country+' မှာ တရားဝင်အလုပ်လုပ်ခွင့်နဲ့ လိုအပ်ချက်တွေကို စစ်ဆေးပြီး ကိုယ့်ကျွမ်းကျင်မှုနဲ့ကိုက်ညီတဲ့ အလုပ်တွေကို ရွေးပါ။'],
+      ['၃။ လျှောက်လွှာတစ်စောင် ပြင်ဆင်ပါ','အလုပ်တစ်ခုချင်းစီအတွက် CV ကို ကိုက်ညီအောင် ပြင်ဆင်ပြီး ယုံကြည်ရတဲ့ အလုပ်ရှင်ထံ လျှောက်ပါ။']
+    ]},
+    side:{title:'အပိုဝင်ငွေ စမ်းသပ်ဖို့ ၃ ဆင့်',items:[
+      ['၁။ ရှိပြီးသားကျွမ်းကျင်မှုကို ရွေးပါ',skills],
+      ['၂။ ကုန်ကျစရိတ်မရှိသလောက်နဲ့ စမ်းပါ','စာရေးခြင်း၊ ဘာသာပြန်ကူညီခြင်း၊ ဒီဇိုင်းအခြေခံ သို့မဟုတ် ဒေသတွင်းဝန်ဆောင်မှုလို အရင်းအနှီးနည်းတဲ့ရွေးချယ်စရာကို စစ်ဆေးပါ။'],
+      ['၃။ ပထမဖောက်သည်ကို ရှာပါ','နမူနာတစ်ခု ပြုလုပ်ပြီး ယုံကြည်ရတဲ့ မိတ်ဆွေ၊ ဒေသတွင်းအဖွဲ့ သို့မဟုတ် တရားဝင်ပလက်ဖောင်းမှာ စမ်းသပ်ပါ။ ဝင်ငွေအာမခံမရှိပါ။']
+    ]},
+    business:{title:'လုပ်ငန်းသေးသေးတစ်ခု စမ်းသပ်ဖို့ ၃ ဆင့်',items:[
+      ['၁။ ဖောက်သည်ပြဿနာတစ်ခု ရွေးပါ','သင်သိတဲ့ လူ ၅ ယောက်ကို ဘာအခက်အခဲအတွက် ငွေပေးချင်မလဲ မေးပါ။'],
+      ['၂။ ကုန်ကျစရိတ်နဲ့ ဈေးနှုန်းတွက်ပါ','စတင်ကုန်ကျစရိတ်၊ အချိန်၊ ပစ္စည်းဖိုးနဲ့ ရောင်းဈေးကို စာရင်းလုပ်ပါ။'],
+      ['၃။ အသေးစားစမ်းသပ်ပါ','အရင်ဆုံး ဝယ်သူ ၁–၃ ယောက်နဲ့ စမ်းပြီးမှ ပိုကြီးတဲ့ရင်းနှီးမြှုပ်နှံမှုကို စဉ်းစားပါ။']
+    ]},
+    cv:{title:'CV ပြင်ဆင်ဖို့ ၃ ဆင့်',items:[
+      ['၁။ အတွေ့အကြုံကို စုစည်းပါ',skills],
+      ['၂။ CV မူကြမ်းရေးပါ','အမည်၊ ဆက်သွယ်ရန်၊ အလုပ်အတွေ့အကြုံ၊ ကျွမ်းကျင်မှုနဲ့ ဘာသာစကားတွေကို ရိုးရှင်းစွာ ထည့်ပါ။'],
+      ['၃။ အလုပ်ကြော်ငြာနဲ့ တိုက်စစ်ပါ','အလုပ်ခေါ်စာက တောင်းထားတဲ့ ကျွမ်းကျင်မှုတွေနဲ့ ကိုက်ညီအောင် ပြင်ဆင်ပါ။ မမှန်တဲ့အတွေ့အကြုံ မထည့်ပါနဲ့။']
+    ]}
+  };
+  const p=plans[goal];
+  title.textContent=p.title;
+  steps.innerHTML='';
+  currentPlan=p.title+'\nနိုင်ငံ: '+country+'\nဘာသာစကား: '+language+'\nအချိန်: '+time+'\nဘတ်ဂျက်: '+budget+'\n\n';
+  p.items.forEach(([h,t])=>{
+    const div=document.createElement('div');div.className='step';
+    const strong=document.createElement('strong');strong.textContent=h;
+    const body=document.createElement('div');body.textContent=t;
+    div.append(strong,body);steps.appendChild(div);
+    currentPlan+=h+'\n'+t+'\n\n';
+  });
+  result.classList.add('show');
+  result.scrollIntoView({behavior:'smooth',block:'start'});
+});
+document.getElementById('copyBtn').addEventListener('click',async()=>{
+  try{await navigator.clipboard.writeText(currentPlan);document.getElementById('copyBtn').textContent='ကူးယူပြီးပါပြီ ✓';}
+  catch(e){const ta=document.createElement('textarea');ta.value=currentPlan;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();document.getElementById('copyBtn').textContent='ကူးယူပြီးပါပြီ ✓';}
+});
+</script>
+</body>
+</html>
